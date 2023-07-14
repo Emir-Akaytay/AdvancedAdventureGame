@@ -13,10 +13,10 @@ public class Forest extends BattleLoc {
         System.out.println("Congrats !!! You've been cleared the " + this.getName() + " !!!");
         if(!p.getInventory().isFirewood()) {
             System.out.println("You found " + this.getUniqueItem() + " !!! * Added to Inventory *");
-            p.getInventory().setFood(true);
+            p.getInventory().setFirewood(true);
             int droppedMoney = o.getMoneyDrop() * tempSpawnCount;
-            int balance = p.getMoney() + droppedMoney;
-            p.setMoney(balance);
+            int balance = p.getInventory().getMoney() + droppedMoney;
+            p.getInventory().setMoney(balance);
             System.out.println("You found " + droppedMoney + " Money from Obstacles !!! * Added to Inventory *");
         } else {
             System.out.println("You've cleared " + this.getName() + " before !!!");

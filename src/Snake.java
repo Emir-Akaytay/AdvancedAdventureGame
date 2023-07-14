@@ -67,7 +67,6 @@ public class Snake extends Obstacle{
         int last = luckValueArmor().length - 1;
         int luckyNumber = r.nextInt(last - first + 1);
         int itemIndex = luckValueWeapon()[luckyNumber] - 1;
-        System.out.println(Weapon.weapons()[itemIndex].getName());
         return Weapon.weapons()[itemIndex];
     }
 
@@ -107,7 +106,6 @@ public class Snake extends Obstacle{
         int last = 2;
         int luckyNumber = r.nextInt(last - first + 1) + first;
         luckyNumber = (luckyNumber == 1) ? 5 : 10;
-        System.out.println(luckyNumber);
         return luckyNumber;
     }
 

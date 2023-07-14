@@ -15,8 +15,8 @@ public class Cave extends BattleLoc {
             System.out.println("You found " + this.getUniqueItem() + " !!! * Added to Inventory *");
             p.getInventory().setFood(true);
             int droppedMoney = o.getMoneyDrop() * tempSpawnCount;
-            int balance = p.getMoney() + droppedMoney;
-            p.setMoney(balance);
+            int balance = p.getInventory().getMoney() + droppedMoney;
+            p.getInventory().setMoney(balance);
             System.out.println("You found " + droppedMoney + " Money from Obstacles !!! * Added to Inventory *");
         } else {
             System.out.println("You've cleared " + this.getName() + " before !!!");

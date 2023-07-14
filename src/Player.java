@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Player {
@@ -5,7 +6,6 @@ public class Player {
     private Location location;
     private int damage;
     private int health;
-    private int money;
     private String name;
     private int maxHealth;
     private String playerName;
@@ -17,7 +17,6 @@ public class Player {
         this.name = "";
         this.damage = 0;
         this.health = 0;
-        this.money = 0;
     }
 
     public void selectChar() {
@@ -31,8 +30,23 @@ public class Player {
                     + "\t Money : " + g.getMoney());
         }
         System.out.println("----------------------------------------------------------------");
-        System.out.print("Which one : ");
-        int n = s.nextInt();
+        int n = -1;
+        while(n <= 0 || gameChars.length < n) {
+            try {
+                System.out.print("Which one : ");
+                n = s.nextInt();
+                if (n <= 0 || gameChars.length < n) {
+                    System.out.println("Please Enter Valid Value !!!");
+                    continue;
+                }
+            } catch(InputMismatchException e) {
+                System.out.println("Please Enter An Integer and Valid Value !!!");
+                System.out.print("Which one : ");
+                s.nextLine();
+                n = -1;
+            }
+            s.nextLine();
+        }
         GameChar playerChar = gameChars[n - 1];
         initChar(playerChar);
     }
@@ -41,7 +55,7 @@ public class Player {
         this.name = g.getName();
         this.damage = g.getDamage();
         this.health = g.getHealth();
-        this.money = g.getMoney();
+        this.getInventory().setMoney(g.getMoney());
         this.maxHealth = g.getHealth();
     }
 
@@ -51,14 +65,6 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
     }
 
     public int getHealth() {

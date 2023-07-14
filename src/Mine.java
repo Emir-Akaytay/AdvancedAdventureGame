@@ -1,3 +1,4 @@
+
 public class Mine extends BattleLoc {
     public Mine(Player player) {
         super(player, "Mine", new Snake(),"Unique Armor");
@@ -24,9 +25,20 @@ public class Mine extends BattleLoc {
 
     @Override
     public void endOfLoc(Player p,Obstacle o,int tempSpawnCount) {
-        System.out.println("Congrats !!! , You've been cleared the " + this.getName() + " !!!");
-        System.out.println("You found " + this.getUniqueItem() + " !!! * Added to Inventory *");
-        p.getInventory().setArmor(Armor.uniqueArmor());
+        if(SafeHouse.getOwnedArmors()[SafeHouse.getOwnedArmors().length - 1] == null) {
+            System.out.println("==================");
+            System.out.println("Congrats !!! You've been cleared the " + this.getName() + " !!!");
+            System.out.print("You found " + this.getUniqueItem() + " !!! ** " + this.getUniqueItem() + " Added to Inventory **");
+            if(!p.getInventory().getArmor().getName().equals("Old Clothes")) System.out.println("   -- " + p.getInventory().getArmor().getName() + " Removed from Inventory --");
+            Armor uniqueArmor = Armor.uniqueArmor();
+            int plainHealth = p.getHealth() - p.getInventory().getArmor().getProtection();
+            p.getInventory().setArmor(uniqueArmor);
+            int health = plainHealth + p.getInventory().getArmor().getProtection();
+            p.setHealth(health);
+            SafeHouse.getOwnedArmors()[SafeHouse.getOwnedArmors().length - 1] = uniqueArmor;
+        } else {
+            System.out.println("You Cleared Mine Again !!!");
+        }
     }
 
     public static void luckyItemGenerator(Player p) {
@@ -60,7 +72,11 @@ public class Mine extends BattleLoc {
                 int selectCase = Snake.sc.nextInt();
                 switch (selectCase) {
                     case 1:
-                        equipArmor(p, tempArmor);
+                        if(SafeHouse.getOwnedArmors()[tempArmor.getID() - 1] == null) {
+                            equipArmor(p, tempArmor);
+                        } else {
+                            System.out.println("You've already got " + tempArmor.getName() + " !!!");
+                        }
                         break;
                     case 2:
                         break;
@@ -75,22 +91,29 @@ public class Mine extends BattleLoc {
     }
 
     public static void equipWeapon(Player p, Weapon w) {
-        System.out.print("-- " + p.getInventory().getWeapon().getName() + " removed from Inventory --   ");
+        if(!p.getInventory().getWeapon().getName().equals("Bare Hands")) System.out.print("-- " + p.getInventory().getWeapon().getName() + " removed from Inventory --     ");
         p.getInventory().setWeapon(w);
-        System.out.println("++ " + p.getInventory().getWeapon().getName() + " added to Inventory ++");
+        int plainDamage = p.getDamage() - p.getInventory().getWeapon().getDamage();
+        int damage = plainDamage + w.getDamage();
+        p.setDamage(damage);
+        System.out.println("** " + p.getInventory().getWeapon().getName() + " added to Inventory **");
         SafeHouse.getOwnedWeapons()[w.getID() - 1] = w;
     }
 
     public static void equipArmor(Player p, Armor a) {
-        System.out.print("-- " + p.getInventory().getArmor().getName() + " removed from Inventory --   ");
+        if(!p.getInventory().getArmor().getName().equals("Old Clothes")) System.out.print("-- " + p.getInventory().getArmor().getName() + " removed from Inventory --   ");
+        int plainHealth = p.getHealth() - p.getInventory().getArmor().getProtection();
         p.getInventory().setArmor(a);
-        System.out.println("++ " + p.getInventory().getArmor().getName() + " added to Inventory ++");
+        int health = plainHealth + a.getProtection();
+        p.setHealth(health);
+        System.out.println("** " + p.getInventory().getArmor().getName() + " added to Inventory **");
+        SafeHouse.getOwnedArmors()[a.getID() - 1] = a;
     }
 
     public static void equipMoney(Player p, int m) {
         System.out.println("** " + m + " Money added to Inventory **");
-        int newMoney = p.getMoney() + m;
-        p.setMoney(newMoney);
+        int newMoney = p.getInventory().getMoney() + m;
+        p.getInventory().setMoney(newMoney);
     }
 
     @Override
@@ -99,7 +122,5 @@ public class Mine extends BattleLoc {
         int max = 10;
         return random.nextInt(max - min + 1) + min;
     }
-
-
 
 }

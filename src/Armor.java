@@ -20,8 +20,9 @@ public class Armor {
     }
 
     public static Armor uniqueArmor() {
-        return new Armor(99,"Unique Armor",20,0);
+        return new Armor(4,"Unique Armor",20,0);
     }
+
 
     public int getID() {
         return ID;
